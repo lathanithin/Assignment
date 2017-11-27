@@ -53,12 +53,12 @@ class App extends Component {
         </header>
         <Row>
         <h2>shfsjdfh</h2>
-        <select onChange={this.changeDropDown} className="form-control">
+        <select onChange={this.changeDropDown} className="form-control cust-form">
          <option value={1}>A</option>
          <option value={2}>B</option>
          <option value={3}>C</option>
        </select>
-        <select  className="form-control" >
+        <select  className="form-control cust-form" >
           {
             this.state.appendValue.map((value,index)=>{
               return <option key={index} value={index}>{value}</option>;
