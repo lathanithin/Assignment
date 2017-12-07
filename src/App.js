@@ -1,18 +1,53 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import logo from './logo.svg';
 import './App.css';
 import { Row,DropdownButton,MenuItem} from 'react-bootstrap';
-
+var result_set;
+var resultobject;
 class App extends Component {
   constructor(props){
   super(props);
   this.state = {
     selectedValue : "",
-    appendValue : []
+    appendValue : [],
+    results : "randomdata"
   };
   this.changeDropDown = this.changeDropDown.bind(this);
+    this.result_details=this.result_details.bind(this);
+    this.updateresults=this.updateresults.bind(this);
+}
+updateresults(){
+  this.setState({
+    results: "resultobject"
+  });
 }
 
+result_details(){
+    const axiosInstance = axios.create({
+      baseURL: 'https://randomuser.me',
+      timeout: 2000
+    });
+    axiosInstance.get('/api/')
+    .then(function (response){
+      if(response){
+      result_set = response.data.results;
+      Object.keys(result_set).map((key)=>{
+        resultobject = result_set[key];
+        console.log(resultobject);
+      })
+      }
+      this.setState({
+        results : 'resultobject'
+      });
+    })
+    .catch(function (error) {
+      console.log(error);
+        if(error.response){
+            console.log("data is not availabe");
+        }
+    })
+}
   shouldComponentUpdate(nextProps, nextState){
     if(this.state.selectedValue !=  nextState.selectedValue){
       console.log(nextState.selectedValue);
@@ -45,6 +80,7 @@ class App extends Component {
 
   render() {
     console.log(this.state.appendValue);
+    console.log(this.result_details());
     return (
       <div className="App">
         <header className="App-header">
@@ -52,7 +88,7 @@ class App extends Component {
           <h1 className="App-title">Welcome to React</h1>
         </header>
         <Row>
-        <h2>shfsjdfh</h2>
+        <p onClick={()=>{this.result_details()}}>{this.state.results}<span>{this.resultobject}</span></p>
         <select onChange={this.changeDropDown} className="form-control cust-form">
          <option value={1}>A</option>
          <option value={2}>B</option>
